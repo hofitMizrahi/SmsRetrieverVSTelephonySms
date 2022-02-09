@@ -11,10 +11,6 @@ import com.google.android.gms.common.api.Status
 
 class OtpBroadCastReceiver(var resultCallback: ActivityResultLauncher<Intent?>) : BroadcastReceiver() {
 
-//    fun setLauncher(callback: ActivityResultLauncher<Intent?>){
-//        resultCallback = callback
-//    }
-
     override fun onReceive(context: Context?, intent: Intent?) {
 
         intent?.let { _ ->
@@ -25,19 +21,20 @@ class OtpBroadCastReceiver(var resultCallback: ActivityResultLauncher<Intent?>) 
                 when (smsRetrieverStatus.statusCode) {
                     CommonStatusCodes.SUCCESS -> {
                         // Get consent intent
-                        val consentIntent = extras?.getParcelable<Intent>(SmsRetriever.EXTRA_CONSENT_INTENT)
+
+                        val consentIntent = extras.getParcelable<Intent>(SmsRetriever.EXTRA_CONSENT_INTENT)
                         try {
                             // Start activity to show consent dialog to user, activity must be started in
                             // 5 minutes, otherwise you'll receive another TIMEOUT intent
-                            resultCallback?.launch(consentIntent)
+                            resultCallback.launch(consentIntent)
                         } catch (e: ActivityNotFoundException) {
                             // Handle the exception ...
-                            resultCallback?.launch(null)
+                            resultCallback.launch(null)
                         }
                     }
                     CommonStatusCodes.TIMEOUT -> {
                         // Time out occurred, handle the error.
-                        resultCallback?.launch(null)
+                        resultCallback.launch(null)
                     }
                 }
             }
