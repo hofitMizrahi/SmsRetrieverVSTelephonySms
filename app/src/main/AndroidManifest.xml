@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ideo.digital.myapplication">
+    <!-- <uses-permission android:name="android.permission.RECEIVE_SMS" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
+    <!-- <uses-permission android:name="android.permission.WRITE_SMS" /> -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -9,32 +15,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".broadcast_with_permissions.MainActivity">
-
-        </activity>
-        <activity android:name=".sms_retriever.MainActivitySmsRetrieve">
+        <activity
+            android:name=".sms_retriever.ui.SendSmsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter></activity>
+        <activity android:name=".broadcast_with_permissions.MainActivity">
+
+
         </activity>
+        <activity android:name=".sms_retriever.ui.AutoOtpActivity">
 
-<!--        <receiver-->
-<!--            android:name=".sms_retriever.OtpBroadCastReceiver"-->
-<!--            android:exported="true"-->
-<!--            android:permission="com.google.android.gms.auth.api.phone.permission.SEND">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED"/>-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
-
+        </activity>
     </application>
-<!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
-<!--    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />-->
-<!--    <uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
-<!--    <uses-permission android:name="android.permission.WRITE_SMS" />-->
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

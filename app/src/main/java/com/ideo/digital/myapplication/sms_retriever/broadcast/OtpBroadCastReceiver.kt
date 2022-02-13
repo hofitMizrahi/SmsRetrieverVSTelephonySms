@@ -1,4 +1,4 @@
-package com.ideo.digital.myapplication.sms_retriever
+package com.ideo.digital.myapplication.sms_retriever.broadcast
 
 import android.content.ActivityNotFoundException
 import android.content.BroadcastReceiver
