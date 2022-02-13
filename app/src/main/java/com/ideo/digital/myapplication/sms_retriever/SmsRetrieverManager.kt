@@ -14,17 +14,25 @@ object SmsRetrieverManager {
 
     fun startSmsRetriever(activity: Activity, resultCallback : ActivityResultLauncher<Intent?>){
 
-        val client = SmsRetriever.getClient(activity)
-        val task = client.startSmsRetriever()
-        task.addOnSuccessListener { aVoid: Void? ->
+        val task = SmsRetriever.getClient(activity).startSmsUserConsent(null)
 
-//            val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-//            smsReceiver = OtpBroadCastReceiver(resultCallback)
-//            activity.registerReceiver(smsReceiver, intentFilter)
+        task.addOnSuccessListener {
+
+            Log.i("HofitTest", "addOnSuccessListener")
+
+            val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
+            smsReceiver= OtpBroadCastReceiver(resultCallback)
+            activity.registerReceiver(smsReceiver, intentFilter)
         }
-        task.addOnFailureListener { e: Exception? ->
+        task.addOnFailureListener {
             //error
             Log.i("HofitTest", "addOnFailureListener")
         }
+
+    }
+
+    fun unregister(activity: Activity) {
+        Log.i("HofitTest", "unregisterReceiver")
+        activity.unregisterReceiver(smsReceiver)
     }
 }

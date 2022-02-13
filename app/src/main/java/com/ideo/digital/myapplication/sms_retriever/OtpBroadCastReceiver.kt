@@ -28,12 +28,10 @@ class OtpBroadCastReceiver(var resultCallback: ActivityResultLauncher<Intent?>) 
                             // 5 minutes, otherwise you'll receive another TIMEOUT intent
                             resultCallback.launch(consentIntent)
                         } catch (e: ActivityNotFoundException) {
-                            // Handle the exception ...
                             resultCallback.launch(null)
                         }
                     }
                     CommonStatusCodes.TIMEOUT -> {
-                        // Time out occurred, handle the error.
                         resultCallback.launch(null)
                     }
                 }

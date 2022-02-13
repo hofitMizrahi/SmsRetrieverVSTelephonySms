@@ -15,9 +15,8 @@ import com.ideo.digital.myapplication.R
 
 class MainActivity : AppCompatActivity() {
 
-    //need to uncomment permissions in manifest
-
-    var editText : EditText? = null
+    private var editText : EditText? = null
+    private var broadcast : OTPReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,22 +27,20 @@ class MainActivity : AppCompatActivity() {
         btn.setOnClickListener {
             requestSmsPermission()
         }
-
-        //activity result
     }
 
     private fun requestSmsPermission() {
         val smsPermission: String = Manifest.permission.RECEIVE_SMS
         val grant = ContextCompat.checkSelfPermission(this, smsPermission)
-        //check if read SMS permission is granted or not
+
         if (grant != PackageManager.PERMISSION_GRANTED) {
             val permissionList = arrayOfNulls<String>(1)
             permissionList[0] = smsPermission
             ActivityCompat.requestPermissions(this, permissionList, 1)
         }else {
 
-            val broadcast = OTPReceiver()
-            broadcast.setUnit{
+            broadcast = OTPReceiver()
+            broadcast?.setUnit{
                 editText?.setText(it)
             }
             val filter = IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION).apply {
@@ -52,20 +49,12 @@ class MainActivity : AppCompatActivity() {
             registerReceiver(broadcast, filter)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        broadcast?.let {
+            unregisterReceiver(it)
+        }
+    }
 }
-
-
-//        val imageView = findViewById<ImageView>(R.id.my_image)
-//
-//        try{
-//
-//            Glide.with(applicationContext)
-//                    .load("https://goo.gl/gEgYUd")
-//                    .placeholder(R.drawable.ic_launcher_background)
-//                    .error(R.drawable.ic_launcher_foreground)
-//                    .dontAnimate().into(imageView)
-//
-//        }catch (ee:Exception){
-//            Log.i("gg", "ggg")
-//        }
 

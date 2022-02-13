@@ -1,8 +1,6 @@
 package com.ideo.digital.myapplication.sms_retriever
 
-import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -32,6 +30,10 @@ class MainActivitySmsRetrieve : AppCompatActivity() {
         editText?.setText(extraSmsMessage)
     }
 
+    override fun onStart() {
+        super.onStart()
+        SmsRetrieverManager.startSmsRetriever(this, otpIntentLauncher)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,23 +44,10 @@ class MainActivitySmsRetrieve : AppCompatActivity() {
         btn.setOnClickListener {
             SmsRetrieverManager.startSmsRetriever(this, otpIntentLauncher)
         }
-
-        val task = SmsRetriever.getClient(this).startSmsUserConsent(null)
-
-        task.addOnSuccessListener {
-            register()
-        }
-        task.addOnFailureListener {
-            //error
-            Log.i("HofitTest", "addOnFailureListener")
-        }
-
     }
 
-    private fun register() {
-
-        val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-        val receiver = OtpBroadCastReceiver(otpIntentLauncher)
-        this.registerReceiver(receiver, intentFilter)
+    override fun onDestroy() {
+        super.onDestroy()
+        SmsRetrieverManager.unregister(this)
     }
 }
